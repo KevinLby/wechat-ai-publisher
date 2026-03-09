@@ -45,13 +45,6 @@ class WeChatClient:
     def add_draft(self, title: str, author: str, content: str, cover_url: str = "", digest: str = "") -> str:
         token = self.get_access_token()
         
-        cover_media_id = ""
-        if cover_url:
-            try:
-                cover_media_id = self.upload_image(cover_url)
-            except:
-                pass
-        
         url = f"https://api.weixin.qq.com/cgi-bin/draft/add?access_token={token}"
         
         article = {
@@ -60,12 +53,11 @@ class WeChatClient:
             "content": content
         }
         
-        if cover_media_id:
-            article["cover_media_id"] = cover_media_id
-        
         payload = {"articles": [article]}
+        print(f"[DEBUG] add_draft payload: {json.dumps(payload)}")
         response = requests.post(url, json=payload)
         data = response.json()
+        print(f"[DEBUG] add_draft response: {data}")
         
         if "media_id" in data:
             return data["media_id"]
