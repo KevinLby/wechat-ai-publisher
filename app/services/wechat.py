@@ -45,20 +45,23 @@ class WeChatClient:
     def add_draft(self, title: str, author: str, content: str, cover_url: str = "", digest: str = "") -> str:
         token = self.get_access_token()
         
+        cover_media_id = ""
+        if cover_url:
+            try:
+                cover_media_id = self.upload_image(cover_url)
+            except:
+                pass
+        
         url = f"https://api.weixin.qq.com/cgi-bin/draft/add?access_token={token}"
         
         article = {
             "title": title,
             "author": author,
-            "content": content,
-            "content_source_url": "",
-            "digest": digest,
-            "cover_media_id": "",
-            "cover_url": "",
-            "show_cover_pic": 0,
-            "need_open_comment": 0,
-            "only_fans_can_comment": 0
+            "content": content
         }
+        
+        if cover_media_id:
+            article["cover_media_id"] = cover_media_id
         
         payload = {"articles": [article]}
         response = requests.post(url, json=payload)

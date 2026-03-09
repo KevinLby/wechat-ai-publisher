@@ -22,6 +22,7 @@ async def generate_article(request: ArticleGenerateRequest):
             title=title,
             author=author,
             content=content,
+            cover_url=DEFAULT_COVER_URL,
             digest=digest
         )
         
@@ -31,7 +32,7 @@ async def generate_article(request: ArticleGenerateRequest):
             draft_id=draft_id,
             title=title,
             author=author,
-            cover_url=""
+            cover_url=DEFAULT_COVER_URL
         )
         
     except Exception as e:
