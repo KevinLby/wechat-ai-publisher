@@ -30,18 +30,25 @@ class WeChatClient:
         token = self.get_access_token()
         image_data = requests.get(image_url).content
         
-        url = f"https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token={token}"
+        url = f"https://api.weixin.qq.com/cgi-bin/material/add_material?access_token={token}&type=image"
         files = {"media": ("cover.jpg", image_data, "image/jpeg")}
         response = requests.post(url, files=files)
         data = response.json()
         
-        if "url" in data:
+        if "media_id" in data:
+            return data["media_id"]
+        elif "url" in data:
             return data["url"]
         else:
             raise Exception(f"上传图片失败: {data}")
     
     def add_draft(self, title: str, author: str, content: str, cover_url: str, digest: str = "") -> str:
         token = self.get_access_token()
+        
+        cover_media_id = ""
+        if cover_url and not cover_url.startswith("http"):
+            cover_media_id = cover_url
+        
         url = f"https://api.weixin.qq.com/cgi-bin/draft/add?access_token={token}"
         
         article = {
@@ -50,9 +57,9 @@ class WeChatClient:
             "content": content,
             "content_source_url": "",
             "digest": digest,
-            "cover_media_id": "",
-            "cover_url": cover_url,
-            "show_cover_pic": 1,
+            "cover_media_id": cover_media_id,
+            "cover_url": "",
+            "show_cover_pic": 1 if cover_media_id else 0,
             "need_open_comment": 0,
             "only_fans_can_comment": 0
         }
