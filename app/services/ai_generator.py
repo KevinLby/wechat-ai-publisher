@@ -8,9 +8,6 @@ class AIGenerator:
         self.api_key = config.SILICON_FLOW_API_KEY
         self.base_url = config.SILICON_FLOW_BASE_URL
         self.model = config.SILICON_FLOW_MODEL
-        
-        if not self.api_key:
-            raise ValueError("SILICON_FLOW_API_KEY 环境变量未设置")
     
     def generate_article(self, topic: str) -> Dict[str, Any]:
         prompt = f"""根据主题"{topic}"生成一篇简短的公众号文章。
