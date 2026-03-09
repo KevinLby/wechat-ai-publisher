@@ -10,26 +10,17 @@ class AIGenerator:
         self.model = config.SILICON_FLOW_MODEL
     
     def generate_article(self, topic: str) -> Dict[str, Any]:
-        prompt = f"""你是一个专业的公众号文章写手。请根据以下主题生成一篇高质量的公众号文章。
+        prompt = f"""根据主题"{topic}"生成一篇简短的公众号文章。
 
-主题: {topic}
-
-请生成以下格式的内容（JSON格式返回）：
+要求（JSON格式返回，仅返回JSON）：
 {{
-    "title": "文章标题",
-    "author": "作者名称",
-    "digest": "文章摘要（50字以内）",
-    "content": "文章正文内容（HTML格式，可以包含<p>、<h2>等标签）",
-    "cover_description": "封面图片描述（用于生成或搜索封面图）"
+    "title": "标题",
+    "author": "作者",
+    "digest": "摘要50字",
+    "content": "正文HTML格式，3-4段话"
 }}
 
-要求：
-1. 文章内容要专业、有深度
-2. 使用HTML标签格式化内容
-3. 标题要吸引人
-4. 内容要有实际价值
-5. 返回纯JSON格式，不要有其他内容
-"""
+只返回JSON，不要其他内容。"""
 
         headers = {
             "Authorization": f"Bearer {self.api_key}",
@@ -41,7 +32,7 @@ class AIGenerator:
             "messages": [
                 {"role": "user", "content": prompt}
             ],
-            "max_tokens": 4000,
+            "max_tokens": 1500,
             "temperature": 0.7
         }
         
