@@ -42,12 +42,8 @@ class WeChatClient:
         else:
             raise Exception(f"上传图片失败: {data}")
     
-    def add_draft(self, title: str, author: str, content: str, cover_url: str, digest: str = "") -> str:
+    def add_draft(self, title: str, author: str, content: str, cover_url: str = "", digest: str = "") -> str:
         token = self.get_access_token()
-        
-        cover_media_id = ""
-        if cover_url and not cover_url.startswith("http"):
-            cover_media_id = cover_url
         
         url = f"https://api.weixin.qq.com/cgi-bin/draft/add?access_token={token}"
         
@@ -57,9 +53,9 @@ class WeChatClient:
             "content": content,
             "content_source_url": "",
             "digest": digest,
-            "cover_media_id": cover_media_id,
+            "cover_media_id": "",
             "cover_url": "",
-            "show_cover_pic": 1 if cover_media_id else 0,
+            "show_cover_pic": 0,
             "need_open_comment": 0,
             "only_fans_can_comment": 0
         }

@@ -18,18 +18,10 @@ async def generate_article(request: ArticleGenerateRequest):
         content = article_data.get("content", "")
         digest = article_data.get("digest", "")[:50]
         
-        cover_url = DEFAULT_COVER_URL
-        try:
-            uploaded_url = wechat_client.upload_image(cover_url)
-            cover_url = uploaded_url
-        except Exception as e:
-            print(f"上传封面图失败，使用默认封面: {e}")
-        
         draft_id = wechat_client.add_draft(
             title=title,
             author=author,
             content=content,
-            cover_url=cover_url,
             digest=digest
         )
         
@@ -39,7 +31,7 @@ async def generate_article(request: ArticleGenerateRequest):
             draft_id=draft_id,
             title=title,
             author=author,
-            cover_url=cover_url
+            cover_url=""
         )
         
     except Exception as e:
