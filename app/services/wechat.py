@@ -9,6 +9,9 @@ class WeChatClient:
         self.app_secret = config.WECHAT_APP_SECRET
         self.access_token: Optional[str] = None
         self.token_expires_at = 0
+        
+        if not self.app_id or not self.app_secret:
+            raise ValueError("WECHAT_APP_ID 或 WECHAT_APP_SECRET 环境变量未设置")
     
     def get_access_token(self) -> str:
         import time
