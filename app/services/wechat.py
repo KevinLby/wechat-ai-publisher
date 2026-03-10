@@ -50,11 +50,14 @@ class WeChatClient:
         article = {
             "title": title,
             "author": author,
-            "content": content
+            "content": content,
+            "content_source_url": "https://example.com",
+            "digest": digest[:200] if digest else "",
+            "show_cover_pic": 0
         }
         
         payload = {"articles": [article]}
-        print(f"[DEBUG] add_draft payload: {json.dumps(payload)}")
+        print(f"[DEBUG] add_draft payload: {json.dumps(payload, ensure_ascii=False)}")
         response = requests.post(url, json=payload)
         data = response.json()
         print(f"[DEBUG] add_draft response: {data}")
